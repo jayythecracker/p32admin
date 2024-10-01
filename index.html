@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  
+  
+  <!-- Your custom JS script -->
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Panel</h1>
+    
+    <!-- Form to Add User -->
+    <div class="form-section">
+      <h2>Add User</h2>
+      <input type="text" id="userId" placeholder="User ID">
+      <input type="text" id="username" placeholder="User Name (optional)">
+      <input type="date" id="expiryDate" placeholder="Expiry Date">
+      <button id="addUserBtn">Add User</button>
+    </div>
+
+    <!-- Form to Ban User -->
+    <div class="form-section">
+      <h2>Ban User</h2>
+      <input type="text" id="banUserId" placeholder="User ID to Ban">
+      <button id="banUserBtn">Ban User</button>
+    </div>
+
+    <!-- Form to Adjust Expiry Date -->
+    <div class="form-section">
+      <h2>Adjust Expiry Date</h2>
+      <input type="text" id="adjustUserId" placeholder="User ID">
+      <input type="date" id="newExpiryDate" placeholder="New Expiry Date">
+      <button id="adjustExpiryBtn">Adjust Expiry</button>
+    </div>
+
+    <!-- User List Section -->
+    <div class="form-section">
+        <h2>User List</h2>
+        <div id="userList"></div> <!-- Container for user cards -->
+      </div>
+      
+
+    <!-- Output Area -->
+    <div id="output"></div>
+  </div>
+
+  
+</body>
+</html>
