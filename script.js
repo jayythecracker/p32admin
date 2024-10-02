@@ -100,13 +100,14 @@ function fetchUsers() {
         card.innerHTML = `
           <div class="card-title">ID: ${userId}</div>
           <div class="card-body">
-            <p>Name: ${userData.username}</p>
+            <p>Name: ${userData.name}</p>
             <p>Created At: ${new Date(userData.createdAt).toLocaleDateString()}</p>
             <p>Expiry Date: ${new Date(userData.expiredAt).toLocaleDateString()}</p>
             <p>Banned: ${userData.isBanned ? 'Yes' : 'No'}</p>
           </div>
           <div class="card-footer">
-            <button class="btn-ban" onclick="banUser('${userId}')">Ban User</button>
+          
+            <button class="${userData.isBanned?'btn-unban':'btn-ban'}" onclick="${userData.isBanned?()=>unbanUser(userId):()=>banUser(userId)}">${userData.isBanned?"Unban User":"Ban User"}</button>
           </div>
         `;
   
@@ -126,6 +127,19 @@ function fetchUsers() {
         fetchUsers(); // Refresh the user list after banning
       }).catch((error) => {
         console.error("Error banning user: ", error);
+      });
+    }
+  }
+  // Function to unban a user
+  function unbanUser(userId) {
+    if (confirm(`Are you sure you want to ban user ${userId}?`)) {
+      database.ref('users/' + userId).update({
+        isBanned: false
+      }).then(() => {
+        alert(`User ${userId} has been unbanned!.`);
+        fetchUsers(); // Refresh the user list after banning
+      }).catch((error) => {
+        console.error("Error unbanning user: ", error);
       });
     }
   }
