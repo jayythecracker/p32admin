@@ -61,8 +61,15 @@ function fetchUsers() {
                     <p><strong>ID:</strong> ${userId}</p>
                     <p><strong>Created At:</strong> ${new Date(userData.createdAt).toLocaleDateString()}</p>
                     <p><strong>Expiry Date:</strong> ${new Date(userData.expiredAt).toLocaleDateString()}</p>
-                    <p><strong>Banned:</strong> ${userData.isBanned ? 'Yes' : 'No'}</p>
-                    <p><strong>Pro User:</strong> ${userData.isPro ? 'Yes' : 'No'}</p>
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch"   id="flexSwitchCheckDefault" ${userData.isPro ? 'checked' : ''}>
+                    <label class="form-check-label" for="flexSwitchCheckDefault" >Pro user</label>
+                    </div>
+                    <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch"   id="flexSwitchCheckDefault" ${userData.isBanned ? 'checked' : ''}>
+                    <label class="form-check-label" for="flexSwitchCheckDefault" >Banned User</label>
+                    </div>
+             
                 </div>
             `;
 
@@ -79,3 +86,17 @@ function fetchUsers() {
 }
 
   fetchUsers();
+
+  // Function to ban a user
+  function banUser(userId) {
+    if (confirm(`Are you sure you want to ban user ${userId}?`)) {
+      database.ref('users/' + userId).update({
+        isBanned: true
+      }).then(() => {
+        alert(`User ${userId} has been banned.`);
+        fetchUsers(); // Refresh the user list after banning
+      }).catch((error) => {
+        console.error("Error banning user: ", error);
+      });
+    }
+  }
