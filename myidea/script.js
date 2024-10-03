@@ -19,9 +19,63 @@ const firebaseConfig = {
   addform.classList.remove('visually-hidden');
   usersform.classList.add('visually-hidden');
   }
+
   function hideAddUser(){
     var addform=  document.getElementById('add-user');
     var usersform = document.getElementById('user-list');
     addform.classList.add('visually-hidden');
     usersform.classList.remove('visually-hidden');
+    
   }
+
+// Fetch users from Firebase and display them as cards
+function fetchUsers() {
+    const userList = document.getElementById('userList');
+    userList.innerHTML = ''; // Clear the user list before fetching
+
+    database.ref('users').once('value', (snapshot) => {
+
+        const userRow = document.createElement('div');
+        userRow.classList.add('row', 'g-3'); // Bootstrap row with gutter
+
+        snapshot.forEach((childSnapshot) => {
+            const userId = childSnapshot.key;
+            const userData = childSnapshot.val();
+
+            // Create a user card
+            const userCard = document.createElement('div');
+            userCard.classList.add('card', 'col-lg-3', 'col-md-4', 'col-sm-6', 'shadow-sm'); // Responsive card
+
+            // Add color based on user status
+            if (userData.isPro) {
+                userCard.style.borderLeft = '5px solid green'; // Pro users
+            }
+            if (userData.isBanned) {
+                userCard.style.borderLeft = '5px solid red'; // Banned users
+            }
+
+            // Create card content (e.g., name, email)
+            const userCardBody = `
+                <div class="card-body">
+                    <h5 class="card-title text-primary">${userData.name}</h5>
+                    <p><strong>ID:</strong> ${userId}</p>
+                    <p><strong>Created At:</strong> ${new Date(userData.createdAt).toLocaleDateString()}</p>
+                    <p><strong>Expiry Date:</strong> ${new Date(userData.expiredAt).toLocaleDateString()}</p>
+                    <p><strong>Banned:</strong> ${userData.isBanned ? 'Yes' : 'No'}</p>
+                    <p><strong>Pro User:</strong> ${userData.isPro ? 'Yes' : 'No'}</p>
+                </div>
+            `;
+
+            // Insert the content into the card
+            userCard.innerHTML = userCardBody;
+
+            // Append the card to the row
+            userRow.appendChild(userCard);
+        });
+
+        // Append the row to the userList
+        userList.appendChild(userRow);
+    });
+}
+
+  fetchUsers();
